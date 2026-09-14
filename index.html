@@ -2,346 +2,403 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Candle Blow Test</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>For Ameesha ❤️</title>
 <style>
-    * { box-sizing: border-box; }
-    body {
-        margin: 0;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        background: radial-gradient(circle at 50% 35%, #392348 0%, #171322 45%, #090910 100%);
-        color: white;
-        font-family: Arial, sans-serif;
-        overflow: hidden;
-    }
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Georgia,"Times New Roman",serif}
+body{
+  min-height:100vh;overflow-x:hidden;color:#fff;
+  background:radial-gradient(circle at 50% 30%,#3b234b 0%,#171321 48%,#08080d 100%);
+}
+.screen{
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:28px 18px;position:relative;overflow:hidden
+}
+.hidden{display:none!important}
+h1{font-size:clamp(27px,7vw,42px);font-weight:400;margin:0 0 8px;text-align:center}
+.sub{font-family:Arial,sans-serif;font-size:14px;opacity:.7;text-align:center;line-height:1.5;max-width:340px}
+#cakeScreen{transition:opacity .8s}
+.cakeArea{position:relative;width:min(390px,94vw);height:360px;margin-top:15px}
+.plate{
+ position:absolute;left:50%;bottom:27px;transform:translateX(-50%);
+ width:330px;height:25px;border-radius:50%;
+ background:linear-gradient(#f2f2f5,#aaa);box-shadow:0 10px 25px #0008
+}
+.cake{
+ position:absolute;left:50%;bottom:48px;transform:translateX(-50%);
+ width:285px;height:130px;border-radius:18px 18px 25px 25px;
+ background:linear-gradient(#ffadc6,#dc638e);box-shadow:0 18px 35px #0007
+}
+.cake:before{
+ content:"";position:absolute;left:0;top:0;width:100%;height:40px;
+ background:#ffe8f0;border-radius:18px 18px 12px 12px
+}
+.drip{position:absolute;top:27px;width:25px;height:35px;background:#ffe8f0;border-radius:0 0 15px 15px}
+.d1{left:42px}.d2{left:110px;height:45px}.d3{right:55px;height:30px}
+.candle{
+ position:absolute;bottom:175px;width:17px;height:70px;z-index:3;
+ transform:translateX(-50%);border-radius:5px;
+ background:repeating-linear-gradient(135deg,#fff 0 9px,#ff6c9d 9px 18px)
+}
+.c1{left:17%}.c2{left:34%}.c3{left:50%}.c4{left:66%}.c5{left:83%}
+.wick{position:absolute;top:-8px;left:50%;height:10px;width:2px;background:#222;transform:translateX(-50%)}
+.flame{
+ position:absolute;top:-39px;left:50%;width:21px;height:31px;
+ transform:translateX(-50%) rotate(45deg);border-radius:50% 0 50% 50%;
+ background:#ffd45b;box-shadow:0 0 16px #ffb52e,0 0 36px #ffb52e99;
+ animation:flicker .12s infinite alternate
+}
+.flame:after{content:"";position:absolute;width:8px;height:13px;left:4px;top:9px;background:#fff4a8;border-radius:50%}
+@keyframes flicker{to{transform:translateX(-50%) rotate(51deg) scale(.88,1.08)}}
+.candle.out .flame{display:none}
+.smoke{
+ position:absolute;top:-48px;left:50%;width:10px;height:10px;border-radius:50%;
+ background:#ddd6;animation:smoke 2s ease-out forwards
+}
+@keyframes smoke{to{opacity:0;transform:translate(-50%,-70px) scale(3)}}
+button{
+ border:0;border-radius:999px;padding:14px 25px;background:#ff77a8;color:#fff;
+ font-size:15px;cursor:pointer;box-shadow:0 8px 28px #ff77a844
+}
+#start{margin-top:2px}
+#meter{width:190px;height:5px;background:#ffffff1a;border-radius:8px;overflow:hidden;margin-top:14px}
+#level{height:100%;width:0;background:#ff77a8;transition:width .04s}
+#status{min-height:23px;margin:0 0 8px;font-family:Arial,sans-serif;font-size:14px;opacity:.78;text-align:center}
+.hint{font:12px Arial,sans-serif;opacity:.5;margin-top:10px;text-align:center}
 
-    h1 {
-        margin: 0 0 8px;
-        font-size: 28px;
-        font-weight: 600;
-    }
-
-    #status {
-        opacity: .75;
-        margin-bottom: 35px;
-        text-align: center;
-    }
-
-    .cake-wrap {
-        position: relative;
-        width: 360px;
-        height: 330px;
-    }
-
-    .cake {
-        position: absolute;
-        left: 50%;
-        bottom: 20px;
-        transform: translateX(-50%);
-        width: 280px;
-        height: 125px;
-        background: linear-gradient(#ff9fbd, #e86f98);
-        border-radius: 18px 18px 25px 25px;
-        box-shadow: 0 20px 45px rgba(0,0,0,.4);
-    }
-
-    .cake::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 35px;
-        background: #ffd5e1;
-        border-radius: 18px 18px 12px 12px;
-    }
-
-    .icing {
-        position: absolute;
-        top: 25px;
-        left: 0;
-        width: 100%;
-        height: 35px;
-        background: #fff0f5;
-        border-radius: 0 0 50% 50%;
-    }
-
-    .plate {
-        position: absolute;
-        bottom: 8px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 320px;
-        height: 25px;
-        background: #ddd;
-        border-radius: 50%;
-        box-shadow: 0 8px 15px rgba(0,0,0,.35);
-    }
-
-    .candle {
-        position: absolute;
-        bottom: 140px;
-        width: 13px;
-        height: 62px;
-        background: repeating-linear-gradient(
-            135deg,
-            #fff 0 8px,
-            #ff6f9e 8px 16px
-        );
-        border-radius: 4px;
-        transform: translateX(-50%);
-    }
-
-    .candle:nth-child(1) { left: 15%; }
-    .candle:nth-child(2) { left: 32%; }
-    .candle:nth-child(3) { left: 50%; }
-    .candle:nth-child(4) { left: 68%; }
-    .candle:nth-child(5) { left: 85%; }
-
-    .wick {
-        position: absolute;
-        top: -8px;
-        left: 50%;
-        width: 2px;
-        height: 10px;
-        background: #222;
-        transform: translateX(-50%);
-    }
-
-    .flame {
-        position: absolute;
-        top: -35px;
-        left: 50%;
-        width: 18px;
-        height: 27px;
-        transform: translateX(-50%) rotate(45deg);
-        border-radius: 50% 0 50% 50%;
-        background: #ffd65a;
-        box-shadow: 0 0 15px #ffb52e, 0 0 35px rgba(255,180,40,.7);
-        animation: flicker .12s infinite alternate;
-    }
-
-    .flame::after {
-        content: "";
-        position: absolute;
-        width: 8px;
-        height: 12px;
-        background: #fff4a8;
-        border-radius: 50%;
-        left: 3px;
-        top: 8px;
-    }
-
-    @keyframes flicker {
-        from { transform: translateX(-50%) rotate(43deg) scale(1); }
-        to   { transform: translateX(-50%) rotate(48deg) scale(.88,1.08); }
-    }
-
-    .candle.out .flame {
-        display: none;
-    }
-
-    .smoke {
-        position: absolute;
-        top: -45px;
-        left: 50%;
-        width: 9px;
-        height: 9px;
-        border-radius: 50%;
-        background: rgba(220,220,220,.35);
-        transform: translateX(-50%);
-        animation: smoke 1.8s ease-out forwards;
-        pointer-events: none;
-    }
-
-    @keyframes smoke {
-        0% { opacity: .7; transform: translate(-50%, 0) scale(.7); }
-        100% { opacity: 0; transform: translate(-50%, -65px) scale(2.8); }
-    }
-
-    button {
-        margin-top: 28px;
-        padding: 13px 24px;
-        border: 0;
-        border-radius: 999px;
-        background: #ff77a8;
-        color: white;
-        font-size: 16px;
-        cursor: pointer;
-        box-shadow: 0 8px 25px rgba(255,119,168,.25);
-    }
-
-    button:hover { transform: translateY(-1px); }
-
-    #meter {
-        position: fixed;
-        bottom: 15px;
-        width: 180px;
-        height: 5px;
-        background: rgba(255,255,255,.12);
-        border-radius: 10px;
-        overflow: hidden;
-    }
-
-    #level {
-        width: 0%;
-        height: 100%;
-        background: #ff77a8;
-        transition: width .05s;
-    }
-
-    #success {
-        display: none;
-        position: absolute;
-        inset: 0;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        background: rgba(9,9,16,.78);
-        backdrop-filter: blur(5px);
-        text-align: center;
-        z-index: 20;
-    }
-
-    #success h2 {
-        font-size: 42px;
-        margin: 0 0 10px;
-    }
+#letterScreen{
+ background:radial-gradient(circle at 50% 20%,#33203f,#12101a 55%,#07070b);
+ align-items:center;justify-content:flex-start;padding:38px 15px 70px;
+}
+.letter-wrap{width:min(720px,100%);perspective:1000px}
+.date{text-align:center;font:12px Arial,sans-serif;letter-spacing:3px;opacity:.55;margin-bottom:24px}
+.letter{
+ background:#f8efd9;color:#3b2a24;box-shadow:0 25px 70px #0009;
+ padding:clamp(28px,6vw,60px);border-radius:3px;
+ position:relative;transform-origin:top;animation:openLetter 1.5s cubic-bezier(.2,.8,.2,1) both;
+}
+@keyframes openLetter{from{opacity:0;transform:rotateX(-70deg) translateY(-35px)}to{opacity:1;transform:rotateX(0) translateY(0)}}
+.letter:before{content:"";position:absolute;inset:13px;border:1px solid #bda98b;pointer-events:none}
+.letter h2{font-size:clamp(25px,6vw,38px);font-weight:400;margin:5px 0 28px;text-align:center}
+.letter h3{font-size:21px;font-weight:400;margin:35px 0 15px}
+.letter p{font-size:clamp(16px,2.7vw,19px);line-height:1.85;margin:0 0 18px}
+.signature{text-align:right;margin-top:35px;font-style:italic;font-size:20px}
+.end{margin-top:35px;text-align:center;font-size:17px;line-height:1.8}
+.heart{font-size:32px;margin-top:10px}
+.fadein{animation:fadein 1.5s ease both}
+@keyframes fadein{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+#letterScreen .tiny{font:12px Arial,sans-serif;color:#fff;opacity:.4;margin-top:20px}
 </style>
 </head>
-
 <body>
 
-<h1>🎂 Candle Blow Test</h1>
-<div id="status">Click the button, allow your microphone, then blow!</div>
+<section id="cakeScreen" class="screen">
+  <h1>Make a wish, Ameesha 🎂</h1>
+  <p class="sub">There are five candles waiting for you.<br>Take a breath, make your wish, and blow them out.</p>
 
-<div class="cake-wrap">
-
-    <div class="candle"><div class="wick"></div><div class="flame"></div></div>
-    <div class="candle"><div class="wick"></div><div class="flame"></div></div>
-    <div class="candle"><div class="wick"></div><div class="flame"></div></div>
-    <div class="candle"><div class="wick"></div><div class="flame"></div></div>
-    <div class="candle"><div class="wick"></div><div class="flame"></div></div>
-
-    <div class="cake">
-        <div class="icing"></div>
-    </div>
-
+  <div class="cakeArea">
+    <div class="candle c1"><div class="wick"></div><div class="flame"></div></div>
+    <div class="candle c2"><div class="wick"></div><div class="flame"></div></div>
+    <div class="candle c3"><div class="wick"></div><div class="flame"></div></div>
+    <div class="candle c4"><div class="wick"></div><div class="flame"></div></div>
+    <div class="candle c5"><div class="wick"></div><div class="flame"></div></div>
+    <div class="cake"><div class="drip d1"></div><div class="drip d2"></div><div class="drip d3"></div></div>
     <div class="plate"></div>
+  </div>
 
-    <div id="success">
-        <h2>✨ Wish made! ✨</h2>
-        <div>All the candles are out ❤️</div>
-    </div>
-</div>
+  <div id="status">Tap below to turn on the microphone.</div>
+  <button id="start">🎤 Start</button>
+  <div id="meter"><div id="level"></div></div>
+  <div class="hint">Allow microphone access, then blow toward your phone.</div>
+</section>
 
-<button id="start">🎤 Start Microphone</button>
+<section id="letterScreen" class="screen hidden">
+  <div class="letter-wrap">
+    <div class="date">SEPTEMBER 15, 2036 · SWITZERLAND 🇨🇭</div>
+    <article class="letter">
+      <h2>Hey, Ameesha.</h2>
 
-<div id="meter"><div id="level"></div></div>
+      <p>You're probably wondering why you're reading a letter from me dated ten years in the future.</p>
+
+      <p>I know how impossible that sounds.</p>
+
+      <p>But right now, while you're reading this, I'm sitting here beside you.</p>
+
+      <p>Yes...</p>
+
+      <p><strong>beside you.</strong></p>
+
+      <p>And we're in Switzerland.</p>
+
+      <p><strong>Our Switzerland.</strong></p>
+
+      <p>The place you always wanted to see. The place you talked about. The place that once felt like one of those beautiful things you could only imagine.</p>
+
+      <p>And now...</p>
+
+      <p>Look at us.</p>
+
+      <p>We're actually here.</p>
+
+      <p>I wish I could somehow take this exact moment and send it back to you.</p>
+
+      <p>You'd probably never believe it.</p>
+
+      <p>The view outside this window is beautiful, but honestly, that's not even the best part.</p>
+
+      <p>The best part is looking beside me and seeing <strong>you.</strong></p>
+
+      <p>Because ten years ago, on September 15th, 2026, you were still dreaming about so many of the things that are completely normal to us now.</p>
+
+      <p>And I want you to know something.</p>
+
+      <p><strong>You did it.</strong></p>
+
+      <p><strong>We did it.</strong></p>
+
+      <p>You kept going.</p>
+
+      <p>You kept studying. You kept learning. You kept chasing the things you cared about.</p>
+
+      <p>And that thing you always loved...</p>
+
+      <p><strong>education.</strong></p>
+
+      <p>You never let it go.</p>
+
+      <p>There were difficult days. There were moments when you were tired. Moments when you questioned yourself. Moments when things didn't go exactly how you wanted.</p>
+
+      <p>But you kept moving.</p>
+
+      <p>And I'm sitting here in 2036 watching you live the life you once dreamed about thinking...</p>
+
+      <p><strong>“I'm so proud of her.”</strong></p>
+
+      <p>Not because everything became perfect.</p>
+
+      <p>It didn't.</p>
+
+      <p>Life never does.</p>
+
+      <p>But because you never stopped becoming a better version of yourself.</p>
+
+      <p>You accomplished things that the 2026 version of you probably thought were so far away.</p>
+
+      <p>And I wish you could see the look on your own face when you talk about everything you've achieved.</p>
+
+      <p>It's different now.</p>
+
+      <p>You don't talk about your dreams like they're impossible anymore.</p>
+
+      <p>You've lived some of them. You've created some of them. And some of them became things we never even imagined back then.</p>
+
+      <p>That's the beautiful thing about life.</p>
+
+      <p>Sometimes the future turns out even better than the version you planned.</p>
+
+      <p>And yes...</p>
+
+      <p><strong>we're still dreaming.</strong></p>
+
+      <p>Even after all these years.</p>
+
+      <p>That's something I love about us.</p>
+
+      <p>We're still looking at places on maps. Still making plans. Still saying, “One day, we should...”</p>
+
+      <p>And somehow, some of those “one days” keep becoming <strong>today.</strong></p>
+
+      <p>So, Ameesha, if you're reading this in 2026...</p>
+
+      <p>I want you to slow down for a second.</p>
+
+      <p>I know you want to achieve everything. I know you have things you're working toward. I know sometimes you feel like you need to get everything right.</p>
+
+      <p>But you don't.</p>
+
+      <p>You don't have to become the 2036 version of yourself tomorrow.</p>
+
+      <p>She took ten years to become her.</p>
+
+      <p><strong>Give yourself time.</strong></p>
+
+      <p>Keep studying. Keep learning. Keep chasing what you love. Keep working for the things that matter to you.</p>
+
+      <p>But don't forget to live while you're doing it.</p>
+
+      <p>Because trust me...</p>
+
+      <p>When we're sitting here in Switzerland ten years from now, we're not going to remember every exam.</p>
+
+      <p>We're not going to remember every stressful day.</p>
+
+      <p>We're going to remember the little things.</p>
+
+      <p>The random conversations. The stupid jokes. The days we laughed until our stomachs hurt. The places we went. The things we tried.</p>
+
+      <p>The moments when it was just <strong>you and me against the world.</strong></p>
+
+      <p>So please...</p>
+
+      <p>Take the pictures. Make the memories. Celebrate the little wins.</p>
+
+      <p>Don't be afraid to enjoy where you are just because you're excited about where you're going.</p>
+
+      <p>Because one day, you'll look back and realize that those ordinary days you were so busy rushing through were actually some of the most beautiful days of your life.</p>
+
+      <p>And Ameesha...</p>
+
+      <p>I hope you know how proud I am of you.</p>
+
+      <p>Not just for what you accomplish.</p>
+
+      <p>But for <strong>who you are.</strong></p>
+
+      <p>For your heart. For the way you care. For the things you love. For the way you keep going. For the person you are when nobody is watching.</p>
+
+      <p>That's the person I hope you never lose.</p>
+
+      <p>So if you're reading this on September 15th, 2026...</p>
+
+      <p>stop for a second.</p>
+
+      <p>Look at yourself.</p>
+
+      <p>Look at how far you've already come.</p>
+
+      <p>And smile.</p>
+
+      <p>Because somewhere, ten years from now, there's a future version of you standing in Switzerland.</p>
+
+      <p>She's achieved things she once dreamed about. She's still learning. She's still growing. She's still becoming.</p>
+
+      <p>And she's looking back at you with so much love.</p>
+
+      <p>And she's thinking:</p>
+
+      <p><strong>“I'm so glad she didn't give up.”</strong></p>
+
+      <p>So keep going, Ameesha.</p>
+
+      <p>Keep dreaming. Keep studying. Keep chasing the things you love. Keep being kind. Keep being curious. Keep being you.</p>
+
+      <p>Because the future isn't waiting for some perfect version of you.</p>
+
+      <p>It's waiting for <strong>you as you are right now.</strong></p>
+
+      <p>And if I could come back from 2036 for just one minute...</p>
+
+      <p>I'd probably hug you.</p>
+
+      <p>I'd probably tell you how proud I am.</p>
+
+      <p>I'd probably tell you that everything is going to be okay.</p>
+
+      <p>And then I'd probably tell you one more thing.</p>
+
+      <p>Something I hope you remember every single birthday after this one.</p>
+
+      <p><strong>You are so much more capable than you think you are.</strong></p>
+
+      <p>Never forget that.</p>
+
+      <p>And never forget how loved you are.</p>
+
+      <div class="end">
+        <p>Happy birthday, my love.</p>
+        <p>From Switzerland.<br>From ten years in the future.<br>From a life you haven't lived yet.</p>
+        <p>And from someone who has watched you become everything you were meant to become...</p>
+        <p><strong>keep going.</strong></p>
+        <p>I'll see you here someday.</p>
+        <div class="heart">❤️</div>
+      </div>
+
+      <div class="signature">Brian<br><small>September 15, 2036</small></div>
+    </article>
+  </div>
+  <div class="tiny">Somewhere between today and tomorrow, I was always cheering for you.</div>
+</section>
 
 <script>
-const candles = [...document.querySelectorAll(".candle")];
-const status = document.getElementById("status");
-const startBtn = document.getElementById("start");
-const levelBar = document.getElementById("level");
-const success = document.getElementById("success");
+const candles=[...document.querySelectorAll('.candle')];
+const status=document.getElementById('status');
+const start=document.getElementById('start');
+const level=document.getElementById('level');
+const cakeScreen=document.getElementById('cakeScreen');
+const letterScreen=document.getElementById('letterScreen');
 
-let audioContext;
-let analyser;
-let data;
-let stream;
-let blowing = false;
-let lastBlow = 0;
+let analyser, data, audioCtx, blownCount=0, lastExtinguish=0, stream;
 
-startBtn.addEventListener("click", async () => {
-    try {
-        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const source = audioContext.createMediaStreamSource(stream);
-
-        analyser = audioContext.createAnalyser();
-        analyser.fftSize = 1024;
-        source.connect(analyser);
-
-        data = new Uint8Array(analyser.fftSize);
-
-        startBtn.style.display = "none";
-        status.textContent = "🎤 Microphone ready — blow toward your microphone!";
-        detectBlow();
-
-    } catch (err) {
-        status.textContent = "Microphone permission was denied or unavailable.";
-        console.error(err);
-    }
+start.addEventListener('click', async ()=>{
+  try{
+    stream=await navigator.mediaDevices.getUserMedia({
+      audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}
+    });
+    audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+    const source=audioCtx.createMediaStreamSource(stream);
+    analyser=audioCtx.createAnalyser();
+    analyser.fftSize=1024;
+    analyser.smoothingTimeConstant=.18;
+    source.connect(analyser);
+    data=new Uint8Array(analyser.fftSize);
+    start.style.display='none';
+    status.textContent='Microphone ready. Blow toward your phone! 💨';
+    detect();
+  }catch(e){
+    status.textContent='Please allow microphone access and try again.';
+  }
 });
 
-function detectBlow() {
-    analyser.getByteTimeDomainData(data);
+function detect(){
+  analyser.getByteTimeDomainData(data);
+  let sum=0;
+  for(let i=0;i<data.length;i++){
+    const x=(data[i]-128)/128;
+    sum+=x*x;
+  }
+  const rms=Math.sqrt(sum/data.length);
+  const visual=Math.min(100,Math.max(2,rms*700));
+  level.style.width=visual+'%';
 
-    let sum = 0;
-
-    for (let i = 0; i < data.length; i++) {
-        const value = (data[i] - 128) / 128;
-        sum += value * value;
-    }
-
-    const rms = Math.sqrt(sum / data.length);
-
-    // Visual microphone level
-    const visual = Math.min(100, rms * 500);
-    levelBar.style.width = visual + "%";
-
-    /*
-       Blow detection:
-       A real blow generally creates a sustained burst of
-       broadband microphone energy. This threshold can be
-       adjusted depending on the microphone.
-    */
-    if (rms > 0.13) {
-        if (!blowing) {
-            blowing = true;
-            lastBlow = Date.now();
-
-            // Put out one candle
-            extinguishNext();
-        }
-    } else if (rms < 0.07) {
-        blowing = false;
-    }
-
-    requestAnimationFrame(detectBlow);
+  // More sensitive than the first test.
+  // A short strong burst is enough, with a cooldown to avoid one blow taking many candles.
+  const now=performance.now();
+  if(rms>0.075 && now-lastExtinguish>650){
+    lastExtinguish=now;
+    extinguish();
+  }
+  requestAnimationFrame(detect);
 }
 
-function extinguishNext() {
-    const candle = candles.find(c => !c.classList.contains("out"));
+function extinguish(){
+  const candle=candles.find(c=>!c.classList.contains('out'));
+  if(!candle)return;
 
-    if (!candle) return;
+  candle.classList.add('out');
+  blownCount++;
 
-    candle.classList.add("out");
+  const smoke=document.createElement('div');
+  smoke.className='smoke';
+  candle.appendChild(smoke);
+  setTimeout(()=>smoke.remove(),2000);
 
-    const smoke = document.createElement("div");
-    smoke.className = "smoke";
-    candle.appendChild(smoke);
+  const left=candles.length-blownCount;
+  if(left>0){
+    status.textContent=left===1?'One candle left... blow again! 💨':`${left} candles left... keep blowing! 💨`;
+  }else{
+    status.textContent='✨ Wish made. ✨';
+    setTimeout(openLetter,1400);
+  }
+}
 
-    setTimeout(() => smoke.remove(), 1800);
-
-    const remaining = candles.filter(c => !c.classList.contains("out")).length;
-
-    if (remaining === 0) {
-        status.textContent = "✨ You blew out every candle!";
-        setTimeout(() => {
-            success.style.display = "flex";
-        }, 500);
-    } else {
-        status.textContent = `${remaining} candle${remaining === 1 ? "" : "s"} left... keep blowing!`;
-    }
+function openLetter(){
+  if(stream)stream.getTracks().forEach(t=>t.stop());
+  if(audioCtx)audioCtx.close();
+  cakeScreen.classList.add('hidden');
+  letterScreen.classList.remove('hidden');
+  window.scrollTo({top:0,behavior:'instant'});
 }
 </script>
-
 </body>
 </html>
