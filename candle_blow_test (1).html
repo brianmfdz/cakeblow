@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Candle Blow Test</title>
+<style>
+    * { box-sizing: border-box; }
+    body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: radial-gradient(circle at 50% 35%, #392348 0%, #171322 45%, #090910 100%);
+        color: white;
+        font-family: Arial, sans-serif;
+        overflow: hidden;
+    }
+
+    h1 {
+        margin: 0 0 8px;
+        font-size: 28px;
+        font-weight: 600;
+    }
+
+    #status {
+        opacity: .75;
+        margin-bottom: 35px;
+        text-align: center;
+    }
+
+    .cake-wrap {
+        position: relative;
+        width: 360px;
+        height: 330px;
+    }
+
+    .cake {
+        position: absolute;
+        left: 50%;
+        bottom: 20px;
+        transform: translateX(-50%);
+        width: 280px;
+        height: 125px;
+        background: linear-gradient(#ff9fbd, #e86f98);
+        border-radius: 18px 18px 25px 25px;
+        box-shadow: 0 20px 45px rgba(0,0,0,.4);
+    }
+
+    .cake::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 35px;
+        background: #ffd5e1;
+        border-radius: 18px 18px 12px 12px;
+    }
+
+    .icing {
+        position: absolute;
+        top: 25px;
+        left: 0;
+        width: 100%;
+        height: 35px;
+        background: #fff0f5;
+        border-radius: 0 0 50% 50%;
+    }
+
+    .plate {
+        position: absolute;
+        bottom: 8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 320px;
+        height: 25px;
+        background: #ddd;
+        border-radius: 50%;
+        box-shadow: 0 8px 15px rgba(0,0,0,.35);
+    }
+
+    .candle {
+        position: absolute;
+        bottom: 140px;
+        width: 13px;
+        height: 62px;
+        background: repeating-linear-gradient(
+            135deg,
+            #fff 0 8px,
+            #ff6f9e 8px 16px
+        );
+        border-radius: 4px;
+        transform: translateX(-50%);
+    }
+
+    .candle:nth-child(1) { left: 15%; }
+    .candle:nth-child(2) { left: 32%; }
+    .candle:nth-child(3) { left: 50%; }
+    .candle:nth-child(4) { left: 68%; }
+    .candle:nth-child(5) { left: 85%; }
+
+    .wick {
+        position: absolute;
+        top: -8px;
+        left: 50%;
+        width: 2px;
+        height: 10px;
+        background: #222;
+        transform: translateX(-50%);
+    }
+
+    .flame {
+        position: absolute;
+        top: -35px;
+        left: 50%;
+        width: 18px;
+        height: 27px;
+        transform: translateX(-50%) rotate(45deg);
+        border-radius: 50% 0 50% 50%;
+        background: #ffd65a;
+        box-shadow: 0 0 15px #ffb52e, 0 0 35px rgba(255,180,40,.7);
+        animation: flicker .12s infinite alternate;
+    }
+
+    .flame::after {
+        content: "";
+        position: absolute;
+        width: 8px;
+        height: 12px;
+        background: #fff4a8;
+        border-radius: 50%;
+        left: 3px;
+        top: 8px;
+    }
+
+    @keyframes flicker {
+        from { transform: translateX(-50%) rotate(43deg) scale(1); }
+        to   { transform: translateX(-50%) rotate(48deg) scale(.88,1.08); }
+    }
+
+    .candle.out .flame {
+        display: none;
+    }
+
+    .smoke {
+        position: absolute;
+        top: -45px;
+        left: 50%;
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: rgba(220,220,220,.35);
+        transform: translateX(-50%);
+        animation: smoke 1.8s ease-out forwards;
+        pointer-events: none;
+    }
+
+    @keyframes smoke {
+        0% { opacity: .7; transform: translate(-50%, 0) scale(.7); }
+        100% { opacity: 0; transform: translate(-50%, -65px) scale(2.8); }
+    }
+
+    button {
+        margin-top: 28px;
+        padding: 13px 24px;
+        border: 0;
+        border-radius: 999px;
+        background: #ff77a8;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        box-shadow: 0 8px 25px rgba(255,119,168,.25);
+    }
+
+    button:hover { transform: translateY(-1px); }
+
+    #meter {
+        position: fixed;
+        bottom: 15px;
+        width: 180px;
+        height: 5px;
+        background: rgba(255,255,255,.12);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    #level {
+        width: 0%;
+        height: 100%;
+        background: #ff77a8;
+        transition: width .05s;
+    }
+
+    #success {
+        display: none;
+        position: absolute;
+        inset: 0;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        background: rgba(9,9,16,.78);
+        backdrop-filter: blur(5px);
+        text-align: center;
+        z-index: 20;
+    }
+
+    #success h2 {
+        font-size: 42px;
+        margin: 0 0 10px;
+    }
+</style>
+</head>
+
+<body>
+
+<h1>🎂 Candle Blow Test</h1>
+<div id="status">Click the button, allow your microphone, then blow!</div>
+
+<div class="cake-wrap">
+
+    <div class="candle"><div class="wick"></div><div class="flame"></div></div>
+    <div class="candle"><div class="wick"></div><div class="flame"></div></div>
+    <div class="candle"><div class="wick"></div><div class="flame"></div></div>
+    <div class="candle"><div class="wick"></div><div class="flame"></div></div>
+    <div class="candle"><div class="wick"></div><div class="flame"></div></div>
+
+    <div class="cake">
+        <div class="icing"></div>
+    </div>
+
+    <div class="plate"></div>
+
+    <div id="success">
+        <h2>✨ Wish made! ✨</h2>
+        <div>All the candles are out ❤️</div>
+    </div>
+</div>
+
+<button id="start">🎤 Start Microphone</button>
+
+<div id="meter"><div id="level"></div></div>
+
+<script>
+const candles = [...document.querySelectorAll(".candle")];
+const status = document.getElementById("status");
+const startBtn = document.getElementById("start");
+const levelBar = document.getElementById("level");
+const success = document.getElementById("success");
+
+let audioContext;
+let analyser;
+let data;
+let stream;
+let blowing = false;
+let lastBlow = 0;
+
+startBtn.addEventListener("click", async () => {
+    try {
+        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const source = audioContext.createMediaStreamSource(stream);
+
+        analyser = audioContext.createAnalyser();
+        analyser.fftSize = 1024;
+        source.connect(analyser);
+
+        data = new Uint8Array(analyser.fftSize);
+
+        startBtn.style.display = "none";
+        status.textContent = "🎤 Microphone ready — blow toward your microphone!";
+        detectBlow();
+
+    } catch (err) {
+        status.textContent = "Microphone permission was denied or unavailable.";
+        console.error(err);
+    }
+});
+
+function detectBlow() {
+    analyser.getByteTimeDomainData(data);
+
+    let sum = 0;
+
+    for (let i = 0; i < data.length; i++) {
+        const value = (data[i] - 128) / 128;
+        sum += value * value;
+    }
+
+    const rms = Math.sqrt(sum / data.length);
+
+    // Visual microphone level
+    const visual = Math.min(100, rms * 500);
+    levelBar.style.width = visual + "%";
+
+    /*
+       Blow detection:
+       A real blow generally creates a sustained burst of
+       broadband microphone energy. This threshold can be
+       adjusted depending on the microphone.
+    */
+    if (rms > 0.13) {
+        if (!blowing) {
+            blowing = true;
+            lastBlow = Date.now();
+
+            // Put out one candle
+            extinguishNext();
+        }
+    } else if (rms < 0.07) {
+        blowing = false;
+    }
+
+    requestAnimationFrame(detectBlow);
+}
+
+function extinguishNext() {
+    const candle = candles.find(c => !c.classList.contains("out"));
+
+    if (!candle) return;
+
+    candle.classList.add("out");
+
+    const smoke = document.createElement("div");
+    smoke.className = "smoke";
+    candle.appendChild(smoke);
+
+    setTimeout(() => smoke.remove(), 1800);
+
+    const remaining = candles.filter(c => !c.classList.contains("out")).length;
+
+    if (remaining === 0) {
+        status.textContent = "✨ You blew out every candle!";
+        setTimeout(() => {
+            success.style.display = "flex";
+        }, 500);
+    } else {
+        status.textContent = `${remaining} candle${remaining === 1 ? "" : "s"} left... keep blowing!`;
+    }
+}
+</script>
+
+</body>
+</html>
